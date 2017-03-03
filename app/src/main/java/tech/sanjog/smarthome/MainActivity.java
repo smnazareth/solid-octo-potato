@@ -3,6 +3,8 @@ package tech.sanjog.smarthome;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Looper;
+import android.os.MessageQueue;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -276,7 +278,7 @@ public class MainActivity extends Activity {
 
     public void sendStp(View view) {
         Context context = getApplicationContext();
-        CharSequence text = "Garage Closing";
+        CharSequence text = "Door Stooped. Door Ajar!!";
         int duration = Toast.LENGTH_SHORT;
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
@@ -324,53 +326,68 @@ public class MainActivity extends Activity {
         thread.start();
     }
 
-    public void sendMes(View view) {
-        Context context = getApplicationContext();
-        CharSequence text = "Garage Closing";
-        int duration = Toast.LENGTH_SHORT;
-        Toast toast = Toast.makeText(context, text, duration);
-        toast.show();
+    void measure() {
+
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
+                Looper.prepare();
+                MessageQueue queue = Looper.myQueue();
+                queue.addIdleHandler(new MessageQueue.IdleHandler() {
+                    int mReqCount = 0;
+
+                    @Override
+                    public boolean queueIdle() {
+                        if (++mReqCount == 2) {
+                            Looper.myLooper().quit();
+                            return false;
+                        } else
+                            return true;
+                    }
+                });
+
+                int distance = -1;
                 URL gg = null;
+                BufferedReader reader = null;
                 try {
                     gg = new URL("http://10.42.0.232:8005");
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 }
-                URLConnection yc = null;
                 try {
-                    yc = gg.openConnection();
+                    reader = new BufferedReader(new InputStreamReader(gg.openStream()));
+
+                    String line = null;
+                    while ((line = reader.readLine()) != null) {
+                        int start = line.indexOf("<p>");
+                        int end = line.indexOf("</p>");
+
+                        if (start != -1) {
+                            distance = Integer.parseInt(line.substring(start + "<p>".length(), end));
+                        }
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                /*System.out.println(gg.getProtocol());
-                System.out.println(gg.getHost());
-                System.out.println(gg.getPort());
-                System.out.println(gg.getPath());
-                System.out.println(gg.getQuery());
-                System.out.println(gg.getRef());*/
-                BufferedReader in = null;
-                try {
-                    in = new BufferedReader(new InputStreamReader(yc.getInputStream()));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                /*String inputLine;
-                try {
-                    while ((inputLine = in.readLine()) != null)
-                        System.out.println(inputLine);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }*/
-                try {
-                    in.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if (distance != -1) {
+                    String txt = "Distance is: ";
+                    txt = txt + distance + "cm.";
+                    Toast toast1 = Toast.makeText(MainActivity.this, txt, Toast.LENGTH_SHORT);
+                    toast1.show();
+                    Looper.loop();
                 }
             }
         });
         thread.start();
     }
+
+    public void sendMes(View view) {
+        final Context context = getApplicationContext();
+        CharSequence text = "Measuring...";
+        final int duration = Toast.LENGTH_SHORT;
+        final Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
+        measure();
+    }
+
 }
