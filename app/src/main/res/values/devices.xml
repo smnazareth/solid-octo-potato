@@ -4,5 +4,6 @@
         <item>LED</item>
         <item>Motor</item>
         <item>Sensor</item>
+        <item>Setup</item>
     </string-array>
 </resources>

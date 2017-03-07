@@ -2,6 +2,7 @@ package tech.sanjog.smarthome;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Looper;
 import android.os.MessageQueue;
@@ -21,7 +22,7 @@ import java.net.URLConnection;
 
 public class MainActivity extends Activity {
 
-    Button onButton, offButton, fwdButton, revButton, stpButton, mesButton;
+    Button onButton, offButton, fwdButton, revButton, stpButton, mesButton, resButton, calButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +35,8 @@ public class MainActivity extends Activity {
         revButton = (Button) findViewById(R.id.revButton);
         stpButton = (Button) findViewById(R.id.stpButton);
         mesButton = (Button) findViewById(R.id.mesButton);
+        resButton = (Button) findViewById(R.id.resButton);
+        calButton = (Button) findViewById(R.id.calButton);
         Spinner spinner = (Spinner) findViewById(R.id.DevicesList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
@@ -47,6 +50,8 @@ public class MainActivity extends Activity {
                     stpButton.setVisibility(View.VISIBLE);
                     revButton.setVisibility(View.VISIBLE);
                     mesButton.setVisibility(View.GONE);
+                    calButton.setVisibility(View.GONE);
+                    resButton.setVisibility(View.GONE);
                 } else if (position == 2) {
                     onButton.setVisibility(View.GONE);
                     offButton.setVisibility(View.GONE);
@@ -54,13 +59,26 @@ public class MainActivity extends Activity {
                     stpButton.setVisibility(View.GONE);
                     revButton.setVisibility(View.GONE);
                     mesButton.setVisibility(View.VISIBLE);
-                } else {
+                    calButton.setVisibility(View.GONE);
+                    resButton.setVisibility(View.GONE);
+                } else if (position == 0) {
                     onButton.setVisibility(View.VISIBLE);
                     offButton.setVisibility(View.VISIBLE);
                     fwdButton.setVisibility(View.GONE);
                     stpButton.setVisibility(View.GONE);
                     revButton.setVisibility(View.GONE);
                     mesButton.setVisibility(View.GONE);
+                    calButton.setVisibility(View.GONE);
+                    resButton.setVisibility(View.GONE);
+                } else if (position == 3) {
+                    onButton.setVisibility(View.GONE);
+                    offButton.setVisibility(View.GONE);
+                    fwdButton.setVisibility(View.GONE);
+                    stpButton.setVisibility(View.GONE);
+                    revButton.setVisibility(View.GONE);
+                    mesButton.setVisibility(View.GONE);
+                    calButton.setVisibility(View.VISIBLE);
+                    resButton.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -72,6 +90,8 @@ public class MainActivity extends Activity {
                 stpButton.setVisibility(View.GONE);
                 revButton.setVisibility(View.GONE);
                 mesButton.setVisibility(View.GONE);
+                calButton.setVisibility(View.GONE);
+                resButton.setVisibility(View.GONE);
             }
         });
     }
@@ -390,4 +410,58 @@ public class MainActivity extends Activity {
         measure();
     }
 
+    public void sendCal(View view) {
+        Context context = getApplicationContext();
+        CharSequence text = "Calibrating Sensor...";
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                URL gg = null;
+                try {
+                    gg = new URL("http://10.42.0.232:8006");
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+                URLConnection yc = null;
+                try {
+                    yc = gg.openConnection();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                /*System.out.println(gg.getProtocol());
+                System.out.println(gg.getHost());
+                System.out.println(gg.getPort());
+                System.out.println(gg.getPath());
+                System.out.println(gg.getQuery());
+                System.out.println(gg.getRef());*/
+                BufferedReader in = null;
+                try {
+                    in = new BufferedReader(new InputStreamReader(yc.getInputStream()));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                /*String inputLine;
+                try {
+                    while ((inputLine = in.readLine()) != null)
+                        System.out.println(inputLine);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }*/
+                try {
+                    in.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
+    }
+
+    public void sendRes(View view) {
+        Intent intent = new Intent(MainActivity.this, SetGeoFence.class);
+        startActivity(intent);
+    }
 }
