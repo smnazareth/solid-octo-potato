@@ -155,6 +155,8 @@ public class MainActivity extends Activity implements
         LocationListener lis = new LocationListener() {
             public void onLocationChanged(Location location) {
                 //You will get the mock location
+                mLatitudeText.setText(String.valueOf(location.getLatitude()));
+                mLongitudeText.setText(String.valueOf(location.getLongitude()));
             }
 
             @Override
@@ -185,7 +187,7 @@ public class MainActivity extends Activity implements
             return;
         }
         locMgr.requestLocationUpdates(
-                NETWORK_PROVIDER, 1000, 1, lis);
+                NETWORK_PROVIDER, 0, 0, lis);
 
     }
 
@@ -605,7 +607,7 @@ public class MainActivity extends Activity implements
 
     public void updloc1(View view) {
         mock.pushLocation(12.8597375, 77.4392705);
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        /*if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
             //here to request the missing permissions, and then overriding
@@ -619,12 +621,12 @@ public class MainActivity extends Activity implements
         if (mLastLocation != null) {
             mLatitudeText.setText(String.valueOf(mLastLocation.getLatitude()));
             mLongitudeText.setText(String.valueOf(mLastLocation.getLongitude()));
-        }
+        }*/
     }
 
     public void updloc2(View view) {
         mock.pushLocation(12.3456789, 77.8901234);
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        /*if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
             //here to request the missing permissions, and then overriding
@@ -638,7 +640,7 @@ public class MainActivity extends Activity implements
         if (mLastLocation != null) {
             mLatitudeText.setText(String.valueOf(mLastLocation.getLatitude()));
             mLongitudeText.setText(String.valueOf(mLastLocation.getLongitude()));
-        }
+        }*/
     }
 
 }

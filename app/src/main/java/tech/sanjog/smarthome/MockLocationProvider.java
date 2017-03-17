@@ -4,6 +4,8 @@ import android.content.Context;
 import android.location.Location;
 import android.location.LocationManager;
 
+import static android.os.SystemClock.elapsedRealtimeNanos;
+
 /**
  * Created by sanjog on 3/17/17.
  */
@@ -33,6 +35,7 @@ public class MockLocationProvider {
         //mockLocation.setAltitude(0);
         mockLocation.setTime(System.currentTimeMillis());
         mockLocation.setAccuracy(5);
+        mockLocation.setElapsedRealtimeNanos(elapsedRealtimeNanos());
         lm.setTestProviderLocation(providerName, mockLocation);
     }
 
