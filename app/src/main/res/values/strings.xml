@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Smart Home</string>
     <string name="title_activity_set_geo_fence">SetGeoFence</string>
+    <string name="title_activity_geo_fence_trigger">GeoFenceTrigger</string>
+    <string name="title_activity_geofence_trigger">GeofenceTrigger</string>
+    <string name="title_activity_location">LocationActivity</string>
 </resources>

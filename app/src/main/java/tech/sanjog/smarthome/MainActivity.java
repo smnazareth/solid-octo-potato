@@ -1,6 +1,7 @@
 package tech.sanjog.smarthome;
 
 import android.app.Activity;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -41,6 +42,7 @@ public class MainActivity extends Activity implements
     GoogleApiClient mGoogleApiClient = null;
     TextView mLongitudeText, mLatitudeText;
     MockLocationProvider mock;
+    Intent OpenGarageIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +60,7 @@ public class MainActivity extends Activity implements
         updloc2 = (Button) findViewById(R.id.updloc2Button);
         mLatitudeText = (TextView) findViewById(R.id.mLatitudeText);
         mLongitudeText = (TextView) findViewById(R.id.mLongitudeText);
+        OpenGarageIntent = new Intent(MainActivity.this, LocationActivity.class);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.devices_array, android.R.layout.simple_spinner_item);
         Spinner spinner = (Spinner) findViewById(R.id.DevicesList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -150,8 +153,9 @@ public class MainActivity extends Activity implements
         mock = new MockLocationProvider(NETWORK_PROVIDER, this);
         //Set test location
 
-        LocationManager locMgr = (LocationManager)
-                getSystemService(LOCATION_SERVICE);
+        LocationManager locMgr = (LocationManager) getSystemService(LOCATION_SERVICE);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, OpenGarageIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        locMgr.addProximityAlert(12.8596913, 77.4392257, 100, -1, pendingIntent);
         LocationListener lis = new LocationListener() {
             public void onLocationChanged(Location location) {
                 //You will get the mock location
@@ -184,10 +188,11 @@ public class MainActivity extends Activity implements
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
+            //ActivityCompat.requestPermissions(MainActivity, android.Manifest.permission.ACCESS_FINE_LOCATION);
+            //ActivityCompat.requestPermissions(MainActivity, Manifest.permission.ACCESS_COARSE_LOCATION);
             return;
         }
-        locMgr.requestLocationUpdates(
-                NETWORK_PROVIDER, 0, 0, lis);
+        locMgr.requestLocationUpdates(NETWORK_PROVIDER, 0, 0, lis);
 
     }
 
@@ -568,8 +573,7 @@ public class MainActivity extends Activity implements
     }
 
     public void sendRes(View view) {
-        Intent intent = new Intent(MainActivity.this, SetGeoFence.class);
-        startActivity(intent);
+        startActivity(OpenGarageIntent);
     }
 
     @Override
@@ -607,40 +611,10 @@ public class MainActivity extends Activity implements
 
     public void updloc1(View view) {
         mock.pushLocation(12.8597375, 77.4392705);
-        /*if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            //here to request the missing permissions, and then overriding
-            //public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                    int[] grantResults);
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        if (mLastLocation != null) {
-            mLatitudeText.setText(String.valueOf(mLastLocation.getLatitude()));
-            mLongitudeText.setText(String.valueOf(mLastLocation.getLongitude()));
-        }*/
     }
 
     public void updloc2(View view) {
-        mock.pushLocation(12.3456789, 77.8901234);
-        /*if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            //here to request the missing permissions, and then overriding
-            //public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                    int[] grantResults);
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        if (mLastLocation != null) {
-            mLatitudeText.setText(String.valueOf(mLastLocation.getLatitude()));
-            mLongitudeText.setText(String.valueOf(mLastLocation.getLongitude()));
-        }*/
+        mock.pushLocation(77.3456789, 12.8901234);
     }
 
 }

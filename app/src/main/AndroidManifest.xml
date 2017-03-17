@@ -2,13 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="tech.sanjog.smarthome">
 
-    <meta-data
-        android:name="com.google.android.gms.version"
-        android:value="@integer/google_play_services_version" />
-
     <uses-sdk
         android:minSdkVersion="18"
         android:targetSdkVersion="25" />
+
+    <meta-data
+        android:name="com.google.android.gms.version"
+        android:value="@integer/google_play_services_version" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -30,8 +30,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SetGeoFence"
-            android:label="@string/title_activity_set_geo_fence"
+            android:name=".LocationActivity"
+            android:label="@string/title_activity_location"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
