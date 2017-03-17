@@ -78,7 +78,7 @@
         android:layout_alignParentStart="true"
         android:layout_marginTop="280dp"
         android:onClick="sendCal"
-        android:text="Off" />
+        android:text="Calibrate Sensor" />
 
     <Button
         android:id="@+id/resButton"
@@ -87,6 +87,40 @@
         android:layout_alignParentStart="true"
         android:layout_marginTop="155dp"
         android:onClick="sendRes"
-        android:text="On" />
+        android:text="GeoFence Trigger" />
+
+    <TextView
+        android:id="@+id/mLatitudeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="410dp"
+        android:text="Latitude" />
+
+    <TextView
+        android:id="@+id/mLongitudeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="440dp"
+        android:text="Longitude" />
+
+    <Button
+        android:id="@+id/updloc2Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="280dp"
+        android:onClick="updloc2"
+        android:text="Send Location 2" />
+
+    <Button
+        android:id="@+id/updloc1Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="155dp"
+        android:onClick="updloc1"
+        android:text="Send Location 1" />
 
 </RelativeLayout>
