@@ -76,7 +76,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="280dp"
+        android:layout_marginTop="300dp"
         android:onClick="sendCal"
         android:text="Calibrate Sensor" />
 
@@ -85,7 +85,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="155dp"
+        android:layout_marginTop="180dp"
         android:onClick="sendRes"
         android:text="GeoFence Trigger" />
 
@@ -106,21 +106,30 @@
         android:text="Longitude" />
 
     <Button
-        android:id="@+id/updloc2Button"
+        android:id="@+id/locButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="280dp"
-        android:onClick="updloc2"
-        android:text="Send Location 2" />
+        android:layout_marginTop="240dp"
+        android:onClick="sendLoc"
+        android:text="Location Update" />
 
     <Button
-        android:id="@+id/updloc1Button"
+        android:id="@+id/enButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_marginTop="155dp"
-        android:onClick="updloc1"
-        android:text="Send Location 1" />
+        android:onClick="sendEnable"
+        android:text="Enable Geofence" />
+
+    <Button
+        android:id="@+id/disButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="280dp"
+        android:onClick="sendDisable"
+        android:text="Disable Geofence" />
 
 </RelativeLayout>

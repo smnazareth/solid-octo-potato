@@ -38,11 +38,14 @@ import static android.location.LocationManager.NETWORK_PROVIDER;
 public class MainActivity extends Activity implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
-    Button onButton, offButton, fwdButton, revButton, stpButton, mesButton, resButton, calButton, updloc1, updloc2;
+    public static LocationManager locMgr;
+    public static PendingIntent pendingIntent;
+    Button onButton, offButton, fwdButton, revButton, stpButton, mesButton, resButton, calButton, locButton, enButton, disButton;
     GoogleApiClient mGoogleApiClient = null;
     TextView mLongitudeText, mLatitudeText;
     MockLocationProvider mock;
     Intent OpenGarageIntent;
+    double glat = 12.8596913, glong = 77.4392257;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +59,9 @@ public class MainActivity extends Activity implements
         mesButton = (Button) findViewById(R.id.mesButton);
         resButton = (Button) findViewById(R.id.resButton);
         calButton = (Button) findViewById(R.id.calButton);
-        updloc1 = (Button) findViewById(R.id.updloc1Button);
-        updloc2 = (Button) findViewById(R.id.updloc2Button);
+        enButton = (Button) findViewById(R.id.enButton);
+        disButton = (Button) findViewById(R.id.disButton);
+        locButton = (Button) findViewById(R.id.locButton);
         mLatitudeText = (TextView) findViewById(R.id.mLatitudeText);
         mLongitudeText = (TextView) findViewById(R.id.mLongitudeText);
         OpenGarageIntent = new Intent(MainActivity.this, LocationActivity.class);
@@ -78,8 +82,11 @@ public class MainActivity extends Activity implements
                     mesButton.setVisibility(View.GONE);
                     calButton.setVisibility(View.GONE);
                     resButton.setVisibility(View.GONE);
-                    updloc1.setVisibility(View.GONE);
-                    updloc2.setVisibility(View.GONE);
+                    enButton.setVisibility(View.GONE);
+                    disButton.setVisibility(View.GONE);
+                    locButton.setVisibility(View.GONE);
+                    mLatitudeText.setVisibility(View.GONE);
+                    mLongitudeText.setVisibility(View.GONE);
                 } else if (position == 2) {
                     onButton.setVisibility(View.GONE);
                     offButton.setVisibility(View.GONE);
@@ -89,8 +96,11 @@ public class MainActivity extends Activity implements
                     mesButton.setVisibility(View.VISIBLE);
                     calButton.setVisibility(View.GONE);
                     resButton.setVisibility(View.GONE);
-                    updloc1.setVisibility(View.GONE);
-                    updloc2.setVisibility(View.GONE);
+                    enButton.setVisibility(View.GONE);
+                    disButton.setVisibility(View.GONE);
+                    locButton.setVisibility(View.GONE);
+                    mLatitudeText.setVisibility(View.GONE);
+                    mLongitudeText.setVisibility(View.GONE);
                 } else if (position == 0) {
                     onButton.setVisibility(View.VISIBLE);
                     offButton.setVisibility(View.VISIBLE);
@@ -100,8 +110,11 @@ public class MainActivity extends Activity implements
                     mesButton.setVisibility(View.GONE);
                     calButton.setVisibility(View.GONE);
                     resButton.setVisibility(View.GONE);
-                    updloc1.setVisibility(View.GONE);
-                    updloc2.setVisibility(View.GONE);
+                    enButton.setVisibility(View.GONE);
+                    disButton.setVisibility(View.GONE);
+                    locButton.setVisibility(View.GONE);
+                    mLatitudeText.setVisibility(View.GONE);
+                    mLongitudeText.setVisibility(View.GONE);
                 } else if (position == 3) {
                     onButton.setVisibility(View.GONE);
                     offButton.setVisibility(View.GONE);
@@ -111,8 +124,11 @@ public class MainActivity extends Activity implements
                     mesButton.setVisibility(View.GONE);
                     calButton.setVisibility(View.VISIBLE);
                     resButton.setVisibility(View.VISIBLE);
-                    updloc1.setVisibility(View.GONE);
-                    updloc2.setVisibility(View.GONE);
+                    enButton.setVisibility(View.GONE);
+                    disButton.setVisibility(View.GONE);
+                    locButton.setVisibility(View.VISIBLE);
+                    mLatitudeText.setVisibility(View.VISIBLE);
+                    mLongitudeText.setVisibility(View.VISIBLE);
                 } else if (position == 4) {
                     onButton.setVisibility(View.GONE);
                     offButton.setVisibility(View.GONE);
@@ -122,8 +138,11 @@ public class MainActivity extends Activity implements
                     mesButton.setVisibility(View.GONE);
                     calButton.setVisibility(View.GONE);
                     resButton.setVisibility(View.GONE);
-                    updloc1.setVisibility(View.VISIBLE);
-                    updloc2.setVisibility(View.VISIBLE);
+                    enButton.setVisibility(View.VISIBLE);
+                    disButton.setVisibility(View.VISIBLE);
+                    locButton.setVisibility(View.GONE);
+                    mLatitudeText.setVisibility(View.GONE);
+                    mLongitudeText.setVisibility(View.GONE);
                 }
             }
 
@@ -137,8 +156,11 @@ public class MainActivity extends Activity implements
                 mesButton.setVisibility(View.GONE);
                 calButton.setVisibility(View.GONE);
                 resButton.setVisibility(View.GONE);
-                updloc1.setVisibility(View.GONE);
-                updloc2.setVisibility(View.GONE);
+                enButton.setVisibility(View.GONE);
+                disButton.setVisibility(View.GONE);
+                mLatitudeText.setVisibility(View.GONE);
+                mLongitudeText.setVisibility(View.GONE);
+                locButton.setVisibility(View.GONE);
             }
         });
         // Create an instance of GoogleAPIClient.
@@ -153,8 +175,8 @@ public class MainActivity extends Activity implements
         mock = new MockLocationProvider(NETWORK_PROVIDER, this);
         //Set test location
 
-        LocationManager locMgr = (LocationManager) getSystemService(LOCATION_SERVICE);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, OpenGarageIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        locMgr = (LocationManager) getSystemService(LOCATION_SERVICE);
+        pendingIntent = PendingIntent.getActivity(this, 0, OpenGarageIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         locMgr.addProximityAlert(12.8596913, 77.4392257, 100, -1, pendingIntent);
         LocationListener lis = new LocationListener() {
             public void onLocationChanged(Location location) {
@@ -194,6 +216,7 @@ public class MainActivity extends Activity implements
         }
         locMgr.requestLocationUpdates(NETWORK_PROVIDER, 0, 0, lis);
 
+        //sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
     }
 
     @Override
@@ -308,12 +331,22 @@ public class MainActivity extends Activity implements
         thread.start();
     }
 
-    public void sendFwd(View view) {
+    public void sendFwd(View view) throws IOException {
         Context context = getApplicationContext();
         CharSequence text = "Garage Opening";
         int duration = Toast.LENGTH_SHORT;
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
+
+        /*locMgr.removeProximityAlert(pendingIntent);
+        FileInputStream fis = context.openFileInput("latlong.txt");
+        InputStreamReader isr = new InputStreamReader(fis);
+        BufferedReader bufferedReader = new BufferedReader(isr);
+        String lats = bufferedReader.readLine();
+        String lons = bufferedReader.readLine();
+        locMgr.addProximityAlert(Integer.parseInt(lats), Integer.parseInt(lons), 100, -1, pendingIntent);*/
+        locMgr.addProximityAlert(glat, glong, 100, -1, pendingIntent);
+
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -358,12 +391,22 @@ public class MainActivity extends Activity implements
         thread.start();
     }
 
-    public void sendRev(View view) {
+    public void sendRev(View view) throws IOException {
         Context context = getApplicationContext();
         CharSequence text = "Garage Closing";
         int duration = Toast.LENGTH_SHORT;
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
+
+        /*locMgr.removeProximityAlert(pendingIntent);
+        FileInputStream fis = context.openFileInput("latlong.txt");
+        InputStreamReader isr = new InputStreamReader(fis);
+        BufferedReader bufferedReader = new BufferedReader(isr);
+        String lats = bufferedReader.readLine();
+        String lons = bufferedReader.readLine();
+        locMgr.addProximityAlert(Integer.parseInt(lats), Integer.parseInt(lons), 100, -1, pendingIntent);*/
+        locMgr.addProximityAlert(glat, glong, 100, -1, pendingIntent);
+
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -408,12 +451,22 @@ public class MainActivity extends Activity implements
         thread.start();
     }
 
-    public void sendStp(View view) {
+    public void sendStp(View view) throws IOException {
         Context context = getApplicationContext();
         CharSequence text = "Door Stooped. Door Ajar!!";
         int duration = Toast.LENGTH_SHORT;
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
+
+        /*locMgr.removeProximityAlert(pendingIntent);
+        FileInputStream fis = context.openFileInput("latlong.txt");
+        InputStreamReader isr = new InputStreamReader(fis);
+        BufferedReader bufferedReader = new BufferedReader(isr);
+        String lats = bufferedReader.readLine();
+        String lons = bufferedReader.readLine();
+        locMgr.addProximityAlert(Integer.parseInt(lats), Integer.parseInt(lons), 100, -1, pendingIntent);*/
+        locMgr.addProximityAlert(glat, glong, 100, -1, pendingIntent);
+
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -609,12 +662,56 @@ public class MainActivity extends Activity implements
         super.onDestroy();
     }
 
-    public void updloc1(View view) {
+    /*public void updloc1 (View view) {
         mock.pushLocation(12.8597375, 77.4392705);
+    }*/
+
+    /*public void updloc2 (View view) {
+        mock.pushLocation(77.3456789, 12.8901234);
+    }*/
+
+    public void sendLoc(View view) {
+        Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        glat = mLastLocation.getLatitude();
+        glong = mLastLocation.getLongitude();
+        /*String filename = "latlong.txt";
+        FileOutputStream outputStream;
+        String lat = String.valueOf(mLastLocation.getLatitude());
+        String lon = String.valueOf(mLastLocation.getLongitude());
+        try{
+            outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
+            outputStream.write(lat.getBytes());
+            outputStream.write(lon.getBytes());
+            outputStream.close();
+        } catch (FileNotFoundException e) {
+            File file = new File(getFilesDir(), filename);
+            try {
+                outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
+                outputStream.write(lat.getBytes());
+                outputStream.write(lon.getBytes());
+                outputStream.close();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
     }
 
-    public void updloc2(View view) {
-        mock.pushLocation(77.3456789, 12.8901234);
+    public void sendEnable(View view) throws IOException {
+        /*Context context = getApplicationContext();
+        locMgr.removeProximityAlert(pendingIntent);
+        FileInputStream fis = context.openFileInput("latlong.txt");
+        InputStreamReader isr = new InputStreamReader(fis);
+        BufferedReader bufferedReader = new BufferedReader(isr);
+        String lats = bufferedReader.readLine();
+        String lons = bufferedReader.readLine();
+        locMgr.addProximityAlert(Integer.parseInt(lats), Integer.parseInt(lons), 100, -1, pendingIntent);*/
+        locMgr.addProximityAlert(glat, glong, 100, -1, pendingIntent);
+    }
+
+    public void sendDisable(View view) {
+        locMgr.removeProximityAlert(pendingIntent);
     }
 
 }

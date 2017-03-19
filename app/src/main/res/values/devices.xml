@@ -5,6 +5,6 @@
         <item>Motor</item>
         <item>Sensor</item>
         <item>Setup</item>
-        <item>Mock Location</item>
+        <item>Geofence</item>
     </string-array>
 </resources>
